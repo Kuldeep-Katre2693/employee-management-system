@@ -1,9 +1,4 @@
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -11,6 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./components/DashboardLayout";
 import Employees from "./pages/Employees";
 import Leaves from "./pages/Leaves";
+import Attendance from "./pages/Attendance";
 
 function App() {
   return (
@@ -28,12 +24,10 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employees" element={<Employees />} />
           <Route path="/leaves" element={<Leaves />} />
+          <Route path="/attendance" element={<Attendance />} />
         </Route>
 
-        <Route
-          path="*"
-          element={<Navigate to="/dashboard" replace />}
-        />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </BrowserRouter>
   );
