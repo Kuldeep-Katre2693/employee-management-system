@@ -48,8 +48,7 @@ public class PayrollController {
     }
 
     @GetMapping("/employee/{employeeId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'EMPLOYEE')")
-    public ResponseEntity<List<Payroll>> getEmployeePayrolls(
+@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")    public ResponseEntity<List<Payroll>> getEmployeePayrolls(
             @PathVariable Long employeeId) {
 
         return ResponseEntity.ok(
