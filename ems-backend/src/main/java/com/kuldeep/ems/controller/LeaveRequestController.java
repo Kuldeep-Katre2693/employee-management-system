@@ -59,8 +59,7 @@ public ResponseEntity<List<LeaveRequest>> getMyLeaves(
 }
 
     @GetMapping("/employee/{employeeId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'EMPLOYEE')")
-    public ResponseEntity<List<LeaveRequest>> getEmployeeLeaves(
+@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")    public ResponseEntity<List<LeaveRequest>> getEmployeeLeaves(
             @PathVariable Long employeeId) {
 
         return ResponseEntity.ok(
