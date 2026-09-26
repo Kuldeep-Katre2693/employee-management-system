@@ -7,6 +7,7 @@ import DashboardLayout from "./components/DashboardLayout";
 import Employees from "./pages/Employees";
 import Leaves from "./pages/Leaves";
 import Attendance from "./pages/Attendance";
+import Payroll from "./pages/Payroll";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/employees" element={<Employees />} />
           <Route path="/leaves" element={<Leaves />} />
           <Route path="/attendance" element={<Attendance />} />
+          <Route path="/payroll" element={<Payroll />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
