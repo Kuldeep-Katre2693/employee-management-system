@@ -1,0 +1,33 @@
+# ==============================
+# Java / Maven
+# ==============================
+ems-backend/target/
+*.class
+
+# ==============================
+# Node / React
+# ==============================
+ems-frontend/node_modules/
+ems-frontend/dist/
+
+# ==============================
+# Environment & Secrets
+# ==============================
+.env
+.env.*
+!.env.example
+
+ems-backend/src/main/resources/application-local.properties
+
+# ==============================
+# IDE
+# ==============================
+.idea/
+.vscode/
+*.iml
+
+# ==============================
+# OS
+# ==============================
+.DS_Store
+Thumbs.db
