@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./components/DashboardLayout";
 import Employees from "./pages/Employees";
+import Leaves from "./pages/Leaves";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         >
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employees" element={<Employees />} />
+          <Route path="/leaves" element={<Leaves />} />
         </Route>
 
         <Route

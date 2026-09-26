@@ -58,6 +58,13 @@ public class LeaveRequestService {
         return leaveRequestRepository.findByEmployeeId(employeeId);
     }
 
+    public List<LeaveRequest> getMyLeaves(String username) {
+    Employee employee = employeeRepository.findByUserUsername(username)
+            .orElseThrow(() -> new RuntimeException("Employee profile not found"));
+
+    return leaveRequestRepository.findByEmployeeId(employee.getId());
+}
+
     public LeaveRequest approveLeave(Long leaveId) {
 
         LeaveRequest leaveRequest = getLeaveById(leaveId);

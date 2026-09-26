@@ -5,6 +5,7 @@ import com.kuldeep.ems.service.LeaveRequestService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -44,6 +45,18 @@ public ResponseEntity<LeaveRequest> applyLeave(
                 leaveRequestService.getAllLeaves()
         );
     }
+
+    @GetMapping("/my")
+@PreAuthorize("hasRole('EMPLOYEE')")
+public ResponseEntity<List<LeaveRequest>> getMyLeaves(
+        Authentication authentication) {
+
+    String username = authentication.getName();
+
+    return ResponseEntity.ok(
+            leaveRequestService.getMyLeaves(username)
+    );
+}
 
     @GetMapping("/employee/{employeeId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'EMPLOYEE')")
