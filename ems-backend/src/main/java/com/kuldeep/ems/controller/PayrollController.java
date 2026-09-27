@@ -5,6 +5,7 @@ import com.kuldeep.ems.service.PayrollService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import java.math.BigDecimal;
 
 import java.util.List;
 
@@ -23,9 +24,9 @@ public class PayrollController {
     public ResponseEntity<Payroll> createPayroll(
             @PathVariable Long employeeId,
             @RequestParam String payrollMonth,
-            @RequestParam Double basicSalary,
-            @RequestParam Double allowance,
-            @RequestParam Double deduction) {
+            @RequestParam BigDecimal basicSalary,
+            @RequestParam BigDecimal allowance,
+            @RequestParam BigDecimal deduction) {
 
         return ResponseEntity.ok(
                 payrollService.createPayroll(

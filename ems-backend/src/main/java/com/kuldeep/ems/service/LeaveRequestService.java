@@ -30,14 +30,14 @@ public class LeaveRequestService {
 
     Employee employee = employeeRepository
             .findByUserUsername(username)
-            .orElseThrow(() ->
-                    new RuntimeException("Employee profile not found"));
+           .orElseThrow(() ->
+        new ResourceNotFoundException("Employee profile not found"));
 
     if (leaveRequest.getStartDate()
             .isAfter(leaveRequest.getEndDate())) {
 
-        throw new RuntimeException(
-                "Start date cannot be after end date");
+        throw new IllegalArgumentException(
+        "Start date cannot be after end date");
     }
 
     leaveRequest.setEmployee(employee);
@@ -62,29 +62,41 @@ throw new ResourceNotFoundException(
 
     public List<LeaveRequest> getMyLeaves(String username) {
     Employee employee = employeeRepository.findByUserUsername(username)
-            .orElseThrow(() -> new RuntimeException("Employee profile not found"));
+            .orElseThrow(() ->
+        new ResourceNotFoundException("Employee profile not found"));
 
     return leaveRequestRepository.findByEmployeeId(employee.getId());
 }
 
-    public LeaveRequest approveLeave(Long leaveId) {
+   public LeaveRequest approveLeave(Long leaveId) {
 
-        LeaveRequest leaveRequest = getLeaveById(leaveId);
+    LeaveRequest leaveRequest = getLeaveById(leaveId);
 
-        leaveRequest.setStatus(LeaveStatus.APPROVED);
-
-        return leaveRequestRepository.save(leaveRequest);
+    if (leaveRequest.getStatus() != LeaveStatus.PENDING) {
+        throw new IllegalStateException(
+                "Only pending leave requests can be approved"
+        );
     }
+
+    leaveRequest.setStatus(LeaveStatus.APPROVED);
+
+    return leaveRequestRepository.save(leaveRequest);
+}
 
     public LeaveRequest rejectLeave(Long leaveId) {
 
-        LeaveRequest leaveRequest = getLeaveById(leaveId);
+    LeaveRequest leaveRequest = getLeaveById(leaveId);
 
-        leaveRequest.setStatus(LeaveStatus.REJECTED);
-
-        return leaveRequestRepository.save(leaveRequest);
+    if (leaveRequest.getStatus() != LeaveStatus.PENDING) {
+        throw new IllegalStateException(
+                "Only pending leave requests can be rejected"
+        );
     }
 
+    leaveRequest.setStatus(LeaveStatus.REJECTED);
+
+    return leaveRequestRepository.save(leaveRequest);
+}
     private LeaveRequest getLeaveById(Long leaveId) {
 
         return leaveRequestRepository.findById(leaveId)

@@ -191,18 +191,14 @@ function Payroll() {
     }
   );
 
-  const basicSalary =
-    Number(formData.basicSalary) || 0;
+  const basicSalary = formData.basicSalary || "0";
+const allowance = formData.allowance || "0";
+const deduction = formData.deduction || "0";
 
-  const allowance =
-    Number(formData.allowance) || 0;
-
-  const deduction =
-    Number(formData.deduction) || 0;
-
-  const calculatedNetSalary =
-    basicSalary + allowance - deduction;
-
+const calculatedNetSalary =
+  (parseFloat(basicSalary) +
+    parseFloat(allowance) -
+    parseFloat(deduction)).toFixed(2);
   return (
     <div className="page-container">
       <div className="page-header">

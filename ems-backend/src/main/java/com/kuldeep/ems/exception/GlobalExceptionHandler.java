@@ -108,4 +108,20 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(response);
     }
+
+    @ExceptionHandler(IllegalStateException.class)
+public ResponseEntity<ErrorResponse> handleIllegalStateException(
+        IllegalStateException ex,
+        HttpServletRequest request) {
+
+    ErrorResponse error = new ErrorResponse(
+            LocalDateTime.now(),
+            HttpStatus.BAD_REQUEST.value(),
+            "Bad Request",
+            ex.getMessage(),
+            request.getRequestURI()
+    );
+
+    return ResponseEntity.badRequest().body(error);
+}
 }

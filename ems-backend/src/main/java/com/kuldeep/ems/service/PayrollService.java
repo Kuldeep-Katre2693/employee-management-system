@@ -7,6 +7,7 @@ import com.kuldeep.ems.repository.EmployeeRepository;
 import com.kuldeep.ems.repository.PayrollRepository;
 import org.springframework.stereotype.Service;
 import com.kuldeep.ems.exception.ResourceNotFoundException;
+import java.math.BigDecimal;
 
 import java.util.List;
 
@@ -27,9 +28,9 @@ public class PayrollService {
     public Payroll createPayroll(
             Long employeeId,
             String payrollMonth,
-            Double basicSalary,
-            Double allowance,
-            Double deduction) {
+            BigDecimal basicSalary,
+            BigDecimal allowance,
+            BigDecimal deduction) {
 
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() ->
@@ -42,22 +43,26 @@ public class PayrollService {
                         employeeId, payrollMonth)
                 .isPresent()) {
 
-            throw new RuntimeException(
-                    "Payroll already exists for this employee and month");
+           throw new IllegalArgumentException(
+        "Payroll already exists for this employee and month");
         }
 
-        if (basicSalary < 0 || allowance < 0 || deduction < 0) {
-            throw new RuntimeException(
-                    "Salary values cannot be negative");
-        }
+       if (basicSalary.compareTo(BigDecimal.ZERO) < 0
+        || allowance.compareTo(BigDecimal.ZERO) < 0
+        || deduction.compareTo(BigDecimal.ZERO) < 0) {
 
-        Double netSalary =
-                basicSalary + allowance - deduction;
+    throw new IllegalArgumentException(
+            "Salary values cannot be negative");
+}
 
-        if (netSalary < 0) {
-            throw new RuntimeException(
-                    "Net salary cannot be negative");
-        }
+BigDecimal netSalary = basicSalary
+        .add(allowance)
+        .subtract(deduction);
+
+if (netSalary.compareTo(BigDecimal.ZERO) < 0) {
+    throw new IllegalArgumentException(
+            "Net salary cannot be negative");
+}
 
         Payroll payroll = new Payroll();
 

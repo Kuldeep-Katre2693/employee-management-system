@@ -63,13 +63,15 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    public void deleteEmployee(Long id) {
+   public void deleteEmployee(Long id) {
 
-        Employee employee = employeeRepository.findById(id)
-        .orElseThrow(() ->
-                new ResourceNotFoundException(
-                        "Employee not found with id: " + id
-                )
-        );
-    }
+    Employee employee = employeeRepository.findById(id)
+            .orElseThrow(() ->
+                    new ResourceNotFoundException(
+                            "Employee not found with id: " + id
+                    )
+            );
+
+    employeeRepository.delete(employee);
+}
 }

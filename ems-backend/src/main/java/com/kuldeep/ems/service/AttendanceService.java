@@ -41,8 +41,8 @@ public class AttendanceService {
                         employee.getId(), today)
                 .isPresent()) {
 
-            throw new RuntimeException(
-                    "Attendance already marked for today");
+            throw new IllegalArgumentException(
+        "Attendance already marked for today");
         }
 
         Attendance attendance = new Attendance();
@@ -70,8 +70,8 @@ public class AttendanceService {
                                 "Attendance record not found for today"));
 
         if (attendance.getCheckOut() != null) {
-            throw new RuntimeException(
-                    "Attendance already checked out");
+           throw new IllegalArgumentException(
+        "Attendance already checked out");
         }
 
         attendance.setCheckOut(LocalTime.now());

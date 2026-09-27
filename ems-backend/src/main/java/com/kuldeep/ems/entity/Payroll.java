@@ -2,6 +2,7 @@ package com.kuldeep.ems.entity;
 
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.math.BigDecimal;
 
 @Entity
 @Table(
@@ -27,16 +28,16 @@ public class Payroll {
     private String payrollMonth;
 
     @Column(nullable = false)
-    private Double basicSalary;
+    private BigDecimal basicSalary;
 
     @Column(nullable = false)
-    private Double allowance;
+    private BigDecimal allowance;
 
     @Column(nullable = false)
-    private Double deduction;
+    private BigDecimal deduction;
 
     @Column(nullable = false)
-    private Double netSalary;
+    private BigDecimal netSalary;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -65,35 +66,35 @@ public class Payroll {
         this.payrollMonth = payrollMonth;
     }
 
-    public Double getBasicSalary() {
+    public BigDecimal getBasicSalary() {
         return basicSalary;
     }
 
-    public void setBasicSalary(Double basicSalary) {
+    public void setBasicSalary(BigDecimal basicSalary) {
         this.basicSalary = basicSalary;
     }
 
-    public Double getAllowance() {
+    public BigDecimal getAllowance() {
         return allowance;
     }
 
-    public void setAllowance(Double allowance) {
+    public void setAllowance(BigDecimal      allowance) {
         this.allowance = allowance;
     }
 
-    public Double getDeduction() {
+    public BigDecimal getDeduction() {
         return deduction;
     }
 
-    public void setDeduction(Double deduction) {
+    public void setDeduction(BigDecimal deduction) {
         this.deduction = deduction;
     }
 
-    public Double getNetSalary() {
+    public BigDecimal getNetSalary() {
         return netSalary;
     }
 
-    public void setNetSalary(Double netSalary) {
+    public void setNetSalary(BigDecimal netSalary) {
         this.netSalary = netSalary;
     }
 
