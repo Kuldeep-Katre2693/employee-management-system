@@ -1,6 +1,6 @@
 package com.kuldeep.ems.controller;
 
-import com.kuldeep.ems.entity.Attendance;
+import com.kuldeep.ems.dto.AttendanceResponse;
 import com.kuldeep.ems.entity.AttendanceStatus;
 import com.kuldeep.ems.service.AttendanceService;
 import org.springframework.http.ResponseEntity;
@@ -24,48 +24,58 @@ public class AttendanceController {
 
     @PostMapping("/mark")
     @PreAuthorize("hasRole('EMPLOYEE')")
-    public ResponseEntity<Attendance> markAttendance(
+    public ResponseEntity<AttendanceResponse> markAttendance(
             @RequestParam AttendanceStatus status,
             Authentication authentication) {
 
         return ResponseEntity.ok(
-                attendanceService.markAttendance(
-                        authentication.getName(),
-                        status
+                AttendanceResponse.from(
+                        attendanceService.markAttendance(
+                                authentication.getName(),
+                                status
+                        )
                 )
         );
     }
 
     @PutMapping("/checkout")
     @PreAuthorize("hasRole('EMPLOYEE')")
-    public ResponseEntity<Attendance> checkOut(
+    public ResponseEntity<AttendanceResponse> checkOut(
             Authentication authentication) {
 
         return ResponseEntity.ok(
-                attendanceService.checkOut(
-                        authentication.getName()
+                AttendanceResponse.from(
+                        attendanceService.checkOut(
+                                authentication.getName()
+                        )
                 )
         );
     }
 
     @GetMapping("/my")
     @PreAuthorize("hasRole('EMPLOYEE')")
-    public ResponseEntity<List<Attendance>> getMyAttendance(
+    public ResponseEntity<List<AttendanceResponse>> getMyAttendance(
             Authentication authentication) {
 
         return ResponseEntity.ok(
-                attendanceService.getEmployeeAttendance(
-                        authentication.getName()
-                )
+                attendanceService
+                        .getEmployeeAttendance(authentication.getName())
+                        .stream()
+                        .map(AttendanceResponse::from)
+                        .toList()
         );
     }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-    public ResponseEntity<List<Attendance>> getAllAttendance() {
+    public ResponseEntity<List<AttendanceResponse>> getAllAttendance() {
 
         return ResponseEntity.ok(
-                attendanceService.getAllAttendance()
+                attendanceService
+                        .getAllAttendance()
+                        .stream()
+                        .map(AttendanceResponse::from)
+                        .toList()
         );
     }
 }

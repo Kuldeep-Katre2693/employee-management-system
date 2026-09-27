@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import "./Leaves.css";
 
 function Leaves() {
   const { role } = useAuth();
@@ -133,17 +134,10 @@ function Leaves() {
   };
 
   const filteredLeaves = leaves.filter((leave) => {
-    const employee = leave.employee;
-
-    const employeeName = employee
-      ? `${employee.firstName || ""} ${
-          employee.lastName || ""
-        }`
-      : "";
-
+    const employeeName = leave.employeeName || "";
     const searchableText = `
       ${employeeName}
-      ${employee?.employeeCode || ""}
+      ${leave.employeeCode || ""}
       ${leave.reason || ""}
       ${leave.status || ""}
     `.toLowerCase();
@@ -152,8 +146,7 @@ function Leaves() {
   });
 
   return (
-    <div className="page-container">
-      <div className="page-header">
+<div className="page-container leaves-page">      <div className="page-header">
         <div>
           <h1>Leave Management</h1>
 
@@ -233,22 +226,27 @@ function Leaves() {
 
               <tbody>
                 {filteredLeaves.map((leave) => {
-                  const employee = leave.employee;
-
+const employeeName = leave.employeeName || "Unknown Employee";
+const employeeCode = leave.employeeCode || "—";
                   return (
                     <tr key={leave.id}>
                       {isManagerOrAdmin && (
                         <td>
-                          <div className="employee-cell">
-                            <strong>
-                              {employee?.firstName}{" "}
-                              {employee?.lastName}
-                            </strong>
+                         <div className="leave-employee-cell">
+  <div className="leave-employee-avatar">
+    {employeeName
+      .split(" ")
+      .map((name) => name[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase()}
+  </div>
 
-                            <span>
-                              {employee?.employeeCode}
-                            </span>
-                          </div>
+  <div className="leave-employee-info">
+    <strong>{employeeName}</strong>
+    <span>{employeeCode}</span>
+  </div>
+</div>
                         </td>
                       )}
 

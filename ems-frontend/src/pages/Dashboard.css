@@ -1,0 +1,412 @@
+/* =========================================
+   WORKSPHERE DASHBOARD
+========================================= */
+
+.ws-dashboard {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.ws-dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 27px;
+}
+
+.ws-eyebrow {
+  margin: 0 0 8px;
+  color: #2563eb;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 1.3px;
+}
+
+.ws-dashboard-header h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 750;
+  letter-spacing: -0.7px;
+}
+
+.ws-dashboard-description {
+  margin: 7px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.ws-role-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid #dbeafe;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 10px;
+  font-weight: 750;
+}
+
+/* =========================================
+   STATISTICS
+========================================= */
+
+.ws-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.ws-stat-card {
+  position: relative;
+  min-height: 164px;
+  box-sizing: border-box;
+  padding: 19px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 13px;
+  background: #ffffff;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.025);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.ws-stat-card::after {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  right: -48px;
+  bottom: -48px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.025;
+}
+
+.ws-stat-card:hover {
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.07);
+}
+
+.ws-stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ws-stat-icon {
+  width: 37px;
+  height: 37px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.ws-stat-blue .ws-stat-icon {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.ws-stat-amber .ws-stat-icon {
+  background: #fffbeb;
+  color: #d97706;
+}
+
+.ws-stat-green .ws-stat-icon {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.ws-stat-purple .ws-stat-icon {
+  background: #f5f3ff;
+  color: #7c3aed;
+}
+
+.ws-stat-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.ws-stat-card:hover .ws-stat-arrow {
+  color: #2563eb;
+  transform: translate(2px, -2px);
+}
+
+.ws-stat-value {
+  margin-top: 19px;
+  color: #0f172a;
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 750;
+  letter-spacing: -0.7px;
+}
+
+.ws-stat-card h3 {
+  margin: 8px 0 0;
+  color: #1e293b;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.ws-stat-card p {
+  margin: 5px 0 0;
+  color: #94a3b8;
+  font-size: 10px;
+}
+
+/* =========================================
+   LOWER GRID
+========================================= */
+
+.ws-dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.85fr);
+  gap: 18px;
+}
+
+.ws-panel {
+  border: 1px solid #e2e8f0;
+  border-radius: 13px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.025);
+}
+
+.ws-panel-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 21px 21px 16px;
+}
+
+.ws-panel-heading .ws-eyebrow {
+  margin-bottom: 6px;
+}
+
+.ws-panel-heading h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.ws-live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #059669;
+  font-size: 10px;
+  font-weight: 650;
+}
+
+.ws-live-indicator span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 3px #d1fae5;
+}
+
+/* =========================================
+   SYSTEM OVERVIEW
+========================================= */
+
+.ws-overview-list {
+  padding: 0 21px 10px;
+}
+
+.ws-overview-row {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-top: 1px solid #eef2f7;
+}
+
+.ws-overview-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.ws-mini-icon {
+  width: 29px;
+  height: 29px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #64748b;
+}
+
+.ws-overview-row strong {
+  color: #334155;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.ws-overview-row .ws-status-active {
+  color: #059669;
+}
+
+/* =========================================
+   HR MODULES
+========================================= */
+
+.ws-module-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 0 21px 21px;
+}
+
+.ws-module-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 58px;
+  box-sizing: border-box;
+  padding: 9px 11px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: #f8fafc;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.ws-module-item:hover {
+  border-color: #dbeafe;
+  background: #eff6ff;
+  transform: translateX(2px);
+}
+
+.ws-module-icon {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #2563eb;
+}
+
+.ws-module-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.ws-module-content strong {
+  display: block;
+  color: #334155;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.ws-module-content span {
+  display: block;
+  margin-top: 3px;
+  color: #94a3b8;
+  font-size: 9px;
+}
+
+.ws-module-arrow {
+  flex-shrink: 0;
+  color: #94a3b8;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.ws-module-item:hover .ws-module-arrow {
+  color: #2563eb;
+  transform: translateX(2px);
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1100px) {
+  .ws-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ws-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .ws-dashboard-header {
+    flex-direction: column;
+  }
+
+  .ws-role-badge {
+    align-self: flex-start;
+  }
+
+  .ws-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ws-stat-card {
+    min-height: 145px;
+  }
+
+  .ws-overview-row {
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    gap: 7px;
+    padding: 12px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .ws-dashboard-header h1 {
+    font-size: 26px;
+  }
+
+  .ws-dashboard-description {
+    line-height: 1.5;
+  }
+
+  .ws-panel-heading {
+    padding: 18px 16px 14px;
+  }
+
+  .ws-overview-list,
+  .ws-module-list {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}

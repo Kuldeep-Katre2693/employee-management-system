@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
+import com.kuldeep.ems.dto.LeaveResponse;
 
 import java.util.List;
 
@@ -23,68 +24,77 @@ public class LeaveRequestController {
 
    @PostMapping
 @PreAuthorize("hasRole('EMPLOYEE')")
-public ResponseEntity<LeaveRequest> applyLeave(
+public ResponseEntity<LeaveResponse> applyLeave(
         @RequestBody LeaveRequest leaveRequest,
         org.springframework.security.core.Authentication authentication) {
 
     String username = authentication.getName();
 
     return ResponseEntity.ok(
-            leaveRequestService.applyLeave(
-                    username,
-                    leaveRequest
-            )
+            LeaveResponse.from(leaveRequestService.applyLeave(
+                username,
+                leaveRequest
+            ))
     );
 }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-    public ResponseEntity<List<LeaveRequest>> getAllLeaves() {
+    public ResponseEntity<List<LeaveResponse>> getAllLeaves() {
 
         return ResponseEntity.ok(
-                leaveRequestService.getAllLeaves()
+            leaveRequestService.getAllLeaves()
+                .stream()
+                .map(LeaveResponse::from)
+                .toList()
         );
     }
 
     @GetMapping("/my")
 @PreAuthorize("hasRole('EMPLOYEE')")
-public ResponseEntity<List<LeaveRequest>> getMyLeaves(
+public ResponseEntity<List<LeaveResponse>> getMyLeaves(
         Authentication authentication) {
 
     String username = authentication.getName();
 
     return ResponseEntity.ok(
-            leaveRequestService.getMyLeaves(username)
+        leaveRequestService.getMyLeaves(username)
+            .stream()
+            .map(LeaveResponse::from)
+            .toList()
     );
 }
 
     @GetMapping("/employee/{employeeId}")
-@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")    public ResponseEntity<List<LeaveRequest>> getEmployeeLeaves(
+@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+ public ResponseEntity<List<LeaveResponse>> getEmployeeLeaves(
             @PathVariable Long employeeId) {
 
         return ResponseEntity.ok(
-                leaveRequestService
-                        .getEmployeeLeaves(employeeId)
+            leaveRequestService.getEmployeeLeaves(employeeId)
+                .stream()
+                .map(LeaveResponse::from)
+                .toList()
         );
     }
 
     @PutMapping("/{leaveId}/approve")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-    public ResponseEntity<LeaveRequest> approveLeave(
+    public ResponseEntity<LeaveResponse> approveLeave(
             @PathVariable Long leaveId) {
 
         return ResponseEntity.ok(
-                leaveRequestService.approveLeave(leaveId)
+            LeaveResponse.from(leaveRequestService.approveLeave(leaveId))
         );
     }
 
     @PutMapping("/{leaveId}/reject")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-    public ResponseEntity<LeaveRequest> rejectLeave(
+    public ResponseEntity<LeaveResponse> rejectLeave(
             @PathVariable Long leaveId) {
 
-        return ResponseEntity.ok(
-                leaveRequestService.rejectLeave(leaveId)
-        );
+            return ResponseEntity.ok(
+                LeaveResponse.from(leaveRequestService.rejectLeave(leaveId))
+            );
     }
 }

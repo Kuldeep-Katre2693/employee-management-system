@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import "./Payroll.css";
 
 function Payroll() {
   const { role } = useAuth();
@@ -168,28 +169,16 @@ function Payroll() {
     )}`;
   };
 
-  const filteredPayrolls = payrolls.filter(
-    (payroll) => {
-      const employee = payroll.employee;
+  const filteredPayrolls = payrolls.filter((payroll) => {
+  const searchableText = `
+    ${payroll.employeeName || ""}
+    ${payroll.employeeCode || ""}
+    ${payroll.payrollMonth || ""}
+    ${payroll.paymentStatus || ""}
+  `.toLowerCase();
 
-      const employeeName = employee
-        ? `${employee.firstName || ""} ${
-            employee.lastName || ""
-          }`
-        : "";
-
-      const searchableText = `
-        ${employeeName}
-        ${employee?.employeeCode || ""}
-        ${payroll.payrollMonth || ""}
-        ${payroll.paymentStatus || ""}
-      `.toLowerCase();
-
-      return searchableText.includes(
-        search.toLowerCase()
-      );
-    }
-  );
+  return searchableText.includes(search.toLowerCase());
+});
 
   const basicSalary = formData.basicSalary || "0";
 const allowance = formData.allowance || "0";
@@ -200,8 +189,7 @@ const calculatedNetSalary =
     parseFloat(allowance) -
     parseFloat(deduction)).toFixed(2);
   return (
-    <div className="page-container">
-      <div className="page-header">
+<div className="page-container payroll-page">      <div className="page-header">
         <div>
           <h1>Payroll Management</h1>
 
@@ -282,25 +270,32 @@ const calculatedNetSalary =
               </thead>
 
               <tbody>
-                {filteredPayrolls.map(
-                  (payroll) => {
-                    const employee =
-                      payroll.employee;
+                {filteredPayrolls.map((payroll) => {
 
                     return (
                       <tr key={payroll.id}>
                         {isManagerOrAdmin && (
                           <td>
-                            <div className="employee-cell">
-                              <strong>
-                                {employee?.firstName}{" "}
-                                {employee?.lastName}
-                              </strong>
+                           <div className="employee-cell">
+  <div className="employee-avatar">
+    {(payroll.employeeName || "U")
+      .split(" ")
+      .map((name) => name.charAt(0))
+      .join("")
+      .slice(0, 2)
+      .toUpperCase()}
+  </div>
 
-                              <span>
-                                {employee?.employeeCode}
-                              </span>
-                            </div>
+  <div className="employee-info">
+    <strong>
+      {payroll.employeeName || "Unknown Employee"}
+    </strong>
+
+    <span>
+      {payroll.employeeCode || "—"}
+    </span>
+  </div>
+</div>
                           </td>
                         )}
 

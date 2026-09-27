@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import "./Attendance.css";
 
 function Attendance() {
   const { role } = useAuth();
@@ -115,26 +116,16 @@ function Attendance() {
     return time.substring(0, 5);
   };
 
-  const filteredAttendance = attendance.filter((record) => {
-    const employee = record.employee;
+ const filteredAttendance = attendance.filter((record) => {
+  const searchableText = `
+    ${record.employeeName || ""}
+    ${record.employeeCode || ""}
+    ${record.attendanceDate || ""}
+    ${record.status || ""}
+  `.toLowerCase();
 
-    const employeeName = employee
-      ? `${employee.firstName || ""} ${
-          employee.lastName || ""
-        }`
-      : "";
-
-    const searchableText = `
-      ${employeeName}
-      ${employee?.employeeCode || ""}
-      ${record.attendanceDate || ""}
-      ${record.status || ""}
-    `.toLowerCase();
-
-    return searchableText.includes(
-      search.toLowerCase()
-    );
-  });
+  return searchableText.includes(search.toLowerCase());
+});
 
   const today = new Date()
     .toISOString()
@@ -145,8 +136,7 @@ function Attendance() {
   );
 
   return (
-    <div className="page-container">
-      <div className="page-header">
+<div className="page-container attendance-page">      <div className="page-header">
         <div>
           <h1>Attendance Management</h1>
 
@@ -319,22 +309,32 @@ function Attendance() {
                 {filteredAttendance.map((record) => {
                   const employee = record.employee;
 
-                  return (
-                    <tr key={record.id}>
-                      {isManagerOrAdmin && (
-                        <td>
-                          <div className="employee-cell">
-                            <strong>
-                              {employee?.firstName}{" "}
-                              {employee?.lastName}
-                            </strong>
+                 return (
+  <tr key={record.id}>
+    {isManagerOrAdmin && (
+      <td>
+        <div className="attendance-employee-cell">
+          <div className="attendance-employee-avatar">
+            {(record.employeeName || "Unknown")
+              .split(" ")
+              .map((name) => name[0])
+              .join("")
+              .slice(0, 2)
+              .toUpperCase()}
+          </div>
 
-                            <span>
-                              {employee?.employeeCode}
-                            </span>
-                          </div>
-                        </td>
-                      )}
+          <div className="attendance-employee-info">
+            <strong>
+              {record.employeeName || "Unknown Employee"}
+            </strong>
+
+            <span>
+              {record.employeeCode || "—"}
+            </span>
+          </div>
+        </div>
+      </td>
+    )}
 
                       <td>
                         {record.attendanceDate}

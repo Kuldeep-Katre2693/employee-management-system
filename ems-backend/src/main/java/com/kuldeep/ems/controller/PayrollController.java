@@ -1,12 +1,13 @@
 package com.kuldeep.ems.controller;
 
-import com.kuldeep.ems.entity.Payroll;
+import com.kuldeep.ems.dto.PayrollResponse;
 import com.kuldeep.ems.service.PayrollService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import java.math.BigDecimal;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -21,7 +22,7 @@ public class PayrollController {
 
     @PostMapping("/employee/{employeeId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Payroll> createPayroll(
+    public ResponseEntity<PayrollResponse> createPayroll(
             @PathVariable Long employeeId,
             @RequestParam String payrollMonth,
             @RequestParam BigDecimal basicSalary,
@@ -29,53 +30,65 @@ public class PayrollController {
             @RequestParam BigDecimal deduction) {
 
         return ResponseEntity.ok(
-                payrollService.createPayroll(
-                        employeeId,
-                        payrollMonth,
-                        basicSalary,
-                        allowance,
-                        deduction
+                PayrollResponse.from(
+                        payrollService.createPayroll(
+                                employeeId,
+                                payrollMonth,
+                                basicSalary,
+                                allowance,
+                                deduction
+                        )
                 )
         );
     }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-    public ResponseEntity<List<Payroll>> getAllPayrolls() {
+    public ResponseEntity<List<PayrollResponse>> getAllPayrolls() {
 
         return ResponseEntity.ok(
                 payrollService.getAllPayrolls()
+                        .stream()
+                        .map(PayrollResponse::from)
+                        .toList()
         );
     }
 
     @GetMapping("/employee/{employeeId}")
-@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")    public ResponseEntity<List<Payroll>> getEmployeePayrolls(
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<List<PayrollResponse>> getEmployeePayrolls(
             @PathVariable Long employeeId) {
 
         return ResponseEntity.ok(
                 payrollService.getEmployeePayrolls(employeeId)
+                        .stream()
+                        .map(PayrollResponse::from)
+                        .toList()
+        );
+    }
+
+    @GetMapping("/my")
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    public ResponseEntity<List<PayrollResponse>> getMyPayrolls(
+            Authentication authentication) {
+
+        return ResponseEntity.ok(
+                payrollService.getMyPayrolls(authentication.getName())
+                        .stream()
+                        .map(PayrollResponse::from)
+                        .toList()
         );
     }
 
     @PutMapping("/{payrollId}/pay")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Payroll> markAsPaid(
+    public ResponseEntity<PayrollResponse> markAsPaid(
             @PathVariable Long payrollId) {
 
         return ResponseEntity.ok(
-                payrollService.markAsPaid(payrollId)
+                PayrollResponse.from(
+                        payrollService.markAsPaid(payrollId)
+                )
         );
     }
-    
-    @GetMapping("/my")
-@PreAuthorize("hasRole('EMPLOYEE')")
-public ResponseEntity<List<Payroll>> getMyPayrolls(
-        org.springframework.security.core.Authentication authentication) {
-
-    return ResponseEntity.ok(
-            payrollService.getMyPayrolls(
-                    authentication.getName()
-            )
-    );
-}
 }

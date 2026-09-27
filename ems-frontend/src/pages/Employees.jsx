@@ -10,6 +10,7 @@ import {
 
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import "./Employees.css";
 
 function Employees() {
   const { role } = useAuth();

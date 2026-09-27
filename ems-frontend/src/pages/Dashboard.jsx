@@ -5,10 +5,16 @@ import {
   ClipboardCheck,
   WalletCards,
   ArrowUpRight,
+  Activity,
+  ShieldCheck,
+  Server,
+  ChevronRight,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import "./Dashboard.css";
 
 function Dashboard() {
   const { role } = useAuth();
@@ -91,6 +97,8 @@ function Dashboard() {
       value: loading ? "..." : stats.employees ?? "—",
       description: "Registered employees",
       icon: Users,
+      link: "/employees",
+      accent: "blue",
     },
     {
       title: "Pending Leaves",
@@ -105,6 +113,8 @@ function Dashboard() {
           ? "Managed by HR"
           : "Requests awaiting action",
       icon: CalendarClock,
+      link: "/leaves",
+      accent: "amber",
     },
     {
       title: "Attendance Records",
@@ -114,6 +124,8 @@ function Dashboard() {
           ? "Your attendance records"
           : "Recorded attendance",
       icon: ClipboardCheck,
+      link: "/attendance",
+      accent: "green",
     },
     {
       title: "Payroll Records",
@@ -123,116 +135,197 @@ function Dashboard() {
           ? "Your payroll records"
           : "Generated payroll records",
       icon: WalletCards,
+      link: "/payroll",
+      accent: "purple",
+    },
+  ];
+
+  const modules = [
+    {
+      title: "Employee Management",
+      description: "Manage employee information",
+      icon: Users,
+      link: "/employees",
+    },
+    {
+      title: "Leave Management",
+      description: "Review employee leave requests",
+      icon: CalendarClock,
+      link: "/leaves",
+    },
+    {
+      title: "Attendance Tracking",
+      description: "Monitor attendance records",
+      icon: ClipboardCheck,
+      link: "/attendance",
+    },
+    {
+      title: "Payroll Management",
+      description: "View and manage payroll",
+      icon: WalletCards,
+      link: "/payroll",
     },
   ];
 
   return (
-    <div className="dashboard">
-      <div className="page-heading">
+    <div className="ws-dashboard">
+      {/* Header */}
+      <div className="ws-dashboard-header">
         <div>
-          <p className="eyebrow">OVERVIEW</p>
+          <p className="ws-eyebrow">OVERVIEW</p>
 
           <h1>Dashboard</h1>
 
-          <p className="page-description">
+          <p className="ws-dashboard-description">
             Monitor your organization's workforce and HR activities.
           </p>
         </div>
 
-        <div className="role-badge">{role}</div>
+        <div className="ws-role-badge">
+          <ShieldCheck size={14} />
+          {role}
+        </div>
       </div>
 
-      <section className="stats-grid">
+      {/* Statistics */}
+      <section className="ws-stats-grid">
         {cards.map((card) => {
           const Icon = card.icon;
 
           return (
-            <div className="stat-card" key={card.title}>
-              <div className="stat-top">
-                <div className="stat-icon">
+            <Link
+              to={card.link}
+              className={`ws-stat-card ws-stat-${card.accent}`}
+              key={card.title}
+            >
+              <div className="ws-stat-top">
+                <div className="ws-stat-icon">
                   <Icon size={21} />
                 </div>
 
-                <ArrowUpRight
-                  size={18}
-                  className="stat-arrow"
-                />
+                <div className="ws-stat-arrow">
+                  <ArrowUpRight size={17} />
+                </div>
               </div>
 
-              <h3>{card.value}</h3>
+              <div className="ws-stat-value">
+                {card.value}
+              </div>
 
-              <p className="stat-title">
-                {card.title}
-              </p>
+              <h3>{card.title}</h3>
 
-              <span>{card.description}</span>
-            </div>
+              <p>{card.description}</p>
+            </Link>
           );
         })}
       </section>
 
-      <section className="dashboard-grid">
-        <div className="dashboard-panel">
-          <div className="panel-heading">
+      {/* Lower Dashboard */}
+      <section className="ws-dashboard-grid">
+        {/* System Overview */}
+        <div className="ws-panel ws-overview-panel">
+          <div className="ws-panel-heading">
             <div>
-              <p className="eyebrow">SYSTEM</p>
+              <p className="ws-eyebrow">SYSTEM</p>
               <h2>WorkSphere Overview</h2>
+            </div>
+
+            <div className="ws-live-indicator">
+              <span></span>
+              Live
             </div>
           </div>
 
-          <div className="overview-content">
-            <div className="overview-row">
-              <span>System Status</span>
-              <strong className="status-active">
+          <div className="ws-overview-list">
+            <div className="ws-overview-row">
+              <div className="ws-overview-label">
+                <div className="ws-mini-icon">
+                  <Activity size={16} />
+                </div>
+
+                <span>System Status</span>
+              </div>
+
+              <strong className="ws-status-active">
                 Operational
               </strong>
             </div>
 
-            <div className="overview-row">
-              <span>Current Role</span>
+            <div className="ws-overview-row">
+              <div className="ws-overview-label">
+                <div className="ws-mini-icon">
+                  <ShieldCheck size={16} />
+                </div>
+
+                <span>Current Role</span>
+              </div>
+
               <strong>{role}</strong>
             </div>
 
-            <div className="overview-row">
-              <span>Authentication</span>
+            <div className="ws-overview-row">
+              <div className="ws-overview-label">
+                <div className="ws-mini-icon">
+                  <ShieldCheck size={16} />
+                </div>
+
+                <span>Authentication</span>
+              </div>
+
               <strong>JWT Secured</strong>
             </div>
 
-            <div className="overview-row">
-              <span>Backend API</span>
-              <strong>Connected</strong>
+            <div className="ws-overview-row">
+              <div className="ws-overview-label">
+                <div className="ws-mini-icon">
+                  <Server size={16} />
+                </div>
+
+                <span>Backend API</span>
+              </div>
+
+              <strong className="ws-status-active">
+                Connected
+              </strong>
             </div>
           </div>
         </div>
 
-        <div className="dashboard-panel">
-          <div className="panel-heading">
+        {/* Quick Access */}
+        <div className="ws-panel ws-modules-panel">
+          <div className="ws-panel-heading">
             <div>
-              <p className="eyebrow">QUICK ACCESS</p>
+              <p className="ws-eyebrow">QUICK ACCESS</p>
               <h2>HR Modules</h2>
             </div>
           </div>
 
-          <div className="quick-list">
-            <div>
-              <Users size={19} />
-              <span>Employee Management</span>
-            </div>
+          <div className="ws-module-list">
+            {modules.map((module) => {
+              const Icon = module.icon;
 
-            <div>
-              <CalendarClock size={19} />
-              <span>Leave Management</span>
-            </div>
+              return (
+                <Link
+                  to={module.link}
+                  className="ws-module-item"
+                  key={module.title}
+                >
+                  <div className="ws-module-icon">
+                    <Icon size={19} />
+                  </div>
 
-            <div>
-              <ClipboardCheck size={19} />
-              <span>Attendance Tracking</span>
-            </div>
+                  <div className="ws-module-content">
+                    <strong>{module.title}</strong>
+                    <span>{module.description}</span>
+                  </div>
 
-            <div>
-              <WalletCards size={19} />
-              <span>Payroll Management</span>
-            </div>
+                  <ChevronRight
+                    size={17}
+                    className="ws-module-arrow"
+                  />
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
