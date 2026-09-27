@@ -6,6 +6,7 @@ import com.kuldeep.ems.entity.Employee;
 import com.kuldeep.ems.repository.AttendanceRepository;
 import com.kuldeep.ems.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
+import com.kuldeep.ems.exception.ResourceNotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -31,9 +32,8 @@ public class AttendanceService {
 
         Employee employee = employeeRepository
                 .findByUserUsername(username)
-                .orElseThrow(() ->
-                        new RuntimeException("Employee profile not found"));
-
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Employee not found with username: " + username));
         LocalDate today = LocalDate.now();
 
         if (attendanceRepository
@@ -59,16 +59,15 @@ public class AttendanceService {
 
         Employee employee = employeeRepository
                 .findByUserUsername(username)
-                .orElseThrow(() ->
-                        new RuntimeException("Employee profile not found"));
-
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Employee not found with username: " + username));
         Attendance attendance = attendanceRepository
                 .findByEmployeeIdAndAttendanceDate(
                         employee.getId(),
                         LocalDate.now())
                 .orElseThrow(() ->
-                        new RuntimeException(
-                                "Today's attendance not found"));
+                        new ResourceNotFoundException(
+                                "Attendance record not found for today"));
 
         if (attendance.getCheckOut() != null) {
             throw new RuntimeException(
@@ -85,9 +84,8 @@ public class AttendanceService {
 
         Employee employee = employeeRepository
                 .findByUserUsername(username)
-                .orElseThrow(() ->
-                        new RuntimeException("Employee profile not found"));
-
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Employee not found with username: " + username));
         return attendanceRepository
                 .findByEmployeeId(employee.getId());
     }

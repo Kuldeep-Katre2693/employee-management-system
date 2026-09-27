@@ -2,6 +2,7 @@ package com.kuldeep.ems.service;
 
 import com.kuldeep.ems.dto.EmployeeRequest;
 import com.kuldeep.ems.entity.Employee;
+import com.kuldeep.ems.exception.ResourceNotFoundException;
 import com.kuldeep.ems.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +24,10 @@ public class EmployeeService {
     public Employee getEmployeeById(Long id) {
         return employeeRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Employee not found with id: " + id));
-    }
+ new ResourceNotFoundException(
+                            "Employee not found with id: " + id
+                    )   );
+                 }
 
     public Employee createEmployee(EmployeeRequest request) {
 
@@ -62,8 +65,11 @@ public class EmployeeService {
 
     public void deleteEmployee(Long id) {
 
-        Employee employee = getEmployeeById(id);
-
-        employeeRepository.delete(employee);
+        Employee employee = employeeRepository.findById(id)
+        .orElseThrow(() ->
+                new ResourceNotFoundException(
+                        "Employee not found with id: " + id
+                )
+        );
     }
 }

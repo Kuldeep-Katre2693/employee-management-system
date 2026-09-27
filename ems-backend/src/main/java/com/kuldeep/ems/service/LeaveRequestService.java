@@ -3,6 +3,7 @@ package com.kuldeep.ems.service;
 import com.kuldeep.ems.entity.Employee;
 import com.kuldeep.ems.entity.LeaveRequest;
 import com.kuldeep.ems.entity.LeaveStatus;
+import com.kuldeep.ems.exception.ResourceNotFoundException;
 import com.kuldeep.ems.repository.EmployeeRepository;
 import com.kuldeep.ems.repository.LeaveRequestRepository;
 import org.springframework.stereotype.Service;
@@ -52,8 +53,9 @@ public class LeaveRequestService {
     public List<LeaveRequest> getEmployeeLeaves(Long employeeId) {
 
         if (!employeeRepository.existsById(employeeId)) {
-            throw new RuntimeException("Employee not found");
-        }
+throw new ResourceNotFoundException(
+    "Employee not found with id: " + employeeId
+);        }
 
         return leaveRequestRepository.findByEmployeeId(employeeId);
     }
@@ -87,6 +89,7 @@ public class LeaveRequestService {
 
         return leaveRequestRepository.findById(leaveId)
                 .orElseThrow(() ->
-                        new RuntimeException("Leave request not found"));
+                        new ResourceNotFoundException(
+                                "Leave request not found with id: " + leaveId));
     }
 }

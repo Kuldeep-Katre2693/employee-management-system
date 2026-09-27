@@ -6,6 +6,7 @@ import com.kuldeep.ems.entity.PaymentStatus;
 import com.kuldeep.ems.repository.EmployeeRepository;
 import com.kuldeep.ems.repository.PayrollRepository;
 import org.springframework.stereotype.Service;
+import com.kuldeep.ems.exception.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -32,7 +33,9 @@ public class PayrollService {
 
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() ->
-                        new RuntimeException("Employee not found"));
+                        new ResourceNotFoundException(
+    "Employee not found with id: " + employeeId)
+);
 
         if (payrollRepository
                 .findByEmployeeIdAndPayrollMonth(
@@ -76,7 +79,9 @@ public class PayrollService {
     public List<Payroll> getEmployeePayrolls(Long employeeId) {
 
         if (!employeeRepository.existsById(employeeId)) {
-            throw new RuntimeException("Employee not found");
+            throw new ResourceNotFoundException(
+    "Employee not found with id: " + employeeId
+);
         }
 
         return payrollRepository.findByEmployeeId(employeeId);
@@ -86,7 +91,9 @@ public class PayrollService {
 
         Payroll payroll = payrollRepository.findById(payrollId)
                 .orElseThrow(() ->
-                        new RuntimeException("Payroll not found"));
+                       new ResourceNotFoundException(
+    "Payroll not found with id: " + payrollId)
+);
 
         payroll.setPaymentStatus(PaymentStatus.PAID);
 
