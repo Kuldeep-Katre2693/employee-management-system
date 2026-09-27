@@ -1,6 +1,7 @@
 package com.kuldeep.ems.entity;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(
@@ -16,7 +17,8 @@ public class Payroll {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;

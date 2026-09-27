@@ -3,6 +3,9 @@ package com.kuldeep.ems.controller;
 import com.kuldeep.ems.dto.AuthRequest;
 import com.kuldeep.ems.dto.AuthResponse;
 import com.kuldeep.ems.service.AuthService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +21,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
-            @RequestBody AuthRequest request) {
+           @Valid @RequestBody AuthRequest request) {
 
         return ResponseEntity.ok(
                 authService.login(request)

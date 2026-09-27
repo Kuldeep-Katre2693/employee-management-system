@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import io.jsonwebtoken.JwtException;
 
 import java.io.IOException;
 
@@ -69,10 +70,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         .setAuthentication(authentication);
             }
 
-        } catch (Exception e) {
-            // Invalid or expired JWT.
-            // Leave the request unauthenticated.
-        }
+        }  catch (JwtException | IllegalArgumentException e) {
+              // Invalid, expired, malformed, or otherwise unusable JWT.
+             // Leave the request unauthenticated.
+}
 
         filterChain.doFilter(request, response);
     }

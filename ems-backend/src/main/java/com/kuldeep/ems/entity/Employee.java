@@ -2,6 +2,7 @@ package com.kuldeep.ems.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "employees")
@@ -32,7 +33,8 @@ public class Employee {
     private LocalDate joiningDate;
 
     private Double salary;
-
+    
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
